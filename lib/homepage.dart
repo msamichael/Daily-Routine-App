@@ -17,13 +17,13 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
            
-          setState(() {
-             AlertDialog(
-            title: Text('br'),
+          // setState(() {
+          //    AlertDialog(
+          //   title: Text('br'),
 
-            );
+          //   );
            
-          });
+          // });
           
         },
         backgroundColor: const Color.fromARGB(255, 51, 53, 52),
@@ -45,14 +45,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 15.0,left: 9,right: 9,bottom: 60),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: routineList,
-                         ),
-          ),
+          child: ReorderableListView(
+            children: routineList,
+            onReorder: (int oldIndex,int newIndex){
+              setState(() {
+                if(oldIndex < newIndex){
+                  newIndex -= 1;
+                }
+                final item = routineList.removeAt(oldIndex);
+                routineList.insert(newIndex,item);
+              });
+            }
+
+            ,),
         ));
   }
 }
