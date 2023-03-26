@@ -1,5 +1,9 @@
 # simple_daily_routine
 
+This project is simply a Simplified Routine App
+
+
+
 A new Flutter project.
 
 ## Getting Started
