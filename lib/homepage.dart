@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_daily_routine/routine_card.dart';
 import 'routine_list.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,13 +18,13 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
            
-          setState(() {
-             AlertDialog(
-            title: Text('br'),
+          // setState(() {
+          //    AlertDialog(
+          //   title: Text('br'),
 
-            );
+          //   );
            
-          });
+          // });
           
         },
         backgroundColor: const Color.fromARGB(255, 51, 53, 52),
@@ -44,15 +45,25 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 15.0,left: 9,right: 9,bottom: 60),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: routineList,
-                         ),
-          ),
+          padding: const EdgeInsets.only(top: 20.0,left: 13,right: 13,bottom: 60),
+          child: ReorderableListView.builder(
+            itemCount: routineList.length,
+            itemBuilder: (context, index){
+              // RoutineCard item = routineList[index];
+              return RoutineCard(key: ValueKey('$index'),);
+            } ,
+            
+            onReorder: (int oldIndex,int newIndex){
+              setState(() {
+                if(oldIndex < newIndex){
+                  newIndex -= 1;
+                }
+                final item = routineList.removeAt(oldIndex);
+                routineList.insert(newIndex,item);
+              });
+            }
+
+            ,),
         ));
   }
 }
