@@ -22,29 +22,26 @@ class _RoutineCardState extends State<RoutineCard> {
   
  
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20,left: 8,right: 8),
-      child: Container(
-        // margin: EdgeInsets.only(bottom: 20,left: 8,right: 8),
-        
-        color: Color.fromARGB(255, 189, 202, 217),
-        key:  widget.key,
-        
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Wake Upwsww',
-                style: TextStyle(fontSize: 25 ),
-                ),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.delete))
-            ],
-          ),
+    return Container(
+       margin: EdgeInsets.only(bottom: 6,top: 6),
+      
+      color: Color.fromARGB(255, 189, 202, 217),
+      key:  widget.key,
+      
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Wake Up',
+              style: TextStyle(fontSize: 25 ),
+              ),
+              IconButton(onPressed: (){}, icon: const Icon(Icons.drag_handle))
+          ],
         ),
-        
       ),
+      
     );
   }
 }

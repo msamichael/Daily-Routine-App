@@ -45,12 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 15.0,left: 9,right: 9,bottom: 60),
+          padding: const EdgeInsets.only(top: 20.0,left: 13,right: 13,bottom: 60),
           child: ReorderableListView.builder(
             itemCount: routineList.length,
             itemBuilder: (context, index){
-              RoutineCard item = routineList[index];
-              return RoutineCard(key: ValueKey('$index'),);routineList;
+              // RoutineCard item = routineList[index];
+              return RoutineCard(key: ValueKey('$index'),);
             } ,
             
             onReorder: (int oldIndex,int newIndex){
