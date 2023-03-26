@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_daily_routine/routine_card.dart';
 import 'routine_list.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -45,8 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 15.0,left: 9,right: 9,bottom: 60),
-          child: ReorderableListView(
-            children: routineList,
+          child: ReorderableListView.builder(
+            itemCount: routineList.length,
+            itemBuilder: (context, index){
+              RoutineCard item = routineList[index];
+              return RoutineCard(key: ValueKey('$index'),);routineList;
+            } ,
+            
             onReorder: (int oldIndex,int newIndex){
               setState(() {
                 if(oldIndex < newIndex){
