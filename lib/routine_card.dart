@@ -20,7 +20,7 @@ class RoutineCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              'Wake Upwsww',
+              'Wake Up',
               style: TextStyle(fontSize: 25 ),
               ),
               IconButton(onPressed: (){}, icon: const Icon(Icons.delete))
