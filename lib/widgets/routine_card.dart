@@ -1,55 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:simple_daily_routine/constants.dart';
 
 
+class RoutineCard extends StatelessWidget {
 
+  final String? routineName;
+  final Function(String?)? onDropdownMenuPressed;
+  final Function()? deleteOnpressed;
+  final bool routineCompleted;
+  final Function(bool?)? routineOnChanged;
+  final String? dropdownValue;
+  String? selectedTime;
+  Color? colour;
 
-
-class RoutineCard extends StatefulWidget {
-
-
-
-   final String? newTaskTitle;
-  
-   RoutineCard({
+  RoutineCard({
     super.key,
-    @required  this.newTaskTitle, 
+    required this.routineName,
+    required this.onDropdownMenuPressed,
+    required this.deleteOnpressed,
+    required this.routineOnChanged,
+    required this.routineCompleted,
+     this.dropdownValue,
+    required this.selectedTime,
+    required this.colour ,
+
   });
-
-  @override
-  State<RoutineCard> createState() => _RoutineCardState();
-}
-
-class _RoutineCardState extends State<RoutineCard> {
-
-
   @override
   Widget build(BuildContext context) {
- 
- 
-
-    return Container(
-       margin: EdgeInsets.only(bottom: 6,top: 6),
-      
-      
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(7),
-        color: Color.fromARGB(255, 189, 202, 217),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-             Text(
-              '${widget.newTaskTitle}',
-              style: TextStyle(fontSize: 25 ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1.0),
+      child: Card(
+        color: colour,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
+          child: ListTile(
+            leading: Checkbox(
+              activeColor: kgreyBlack,
+              checkColor: Colors.white,
+              value: routineCompleted,
+              onChanged: routineOnChanged,
               ),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.drag_handle_sharp))
-          ],
+               subtitle: Text( selectedTime ?? '',
+               style: TextStyle(color:kgreyBlack,
+               fontWeight: FontWeight.bold,
+               fontSize:13.0,
+               ),
+               
+               ),
+            title: Text(routineName!,
+              style: const TextStyle(fontSize: 21, color: Colors.white),
+            ),
+            trailing: DropdownButton(
+              underline:Container(
+                width: 0,
+              
+              ) ,
+              value: dropdownValue,
+              onChanged: onDropdownMenuPressed,
+              icon: const Icon (
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+              items: [
+                
+                DropdownMenuItem(
+                  value: 'Delete',
+                  child: Text('Delete'),
+                  onTap: deleteOnpressed,
+                ),
+              ],
+            ),
+            style: ListTileStyle.list,
+          ),
         ),
       ),
-      
     );
   }
 }
+
 

@@ -1,131 +1,212 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
+import 'package:simple_daily_routine/widgets/my_alert_box.dart';
+import 'package:simple_daily_routine/widgets/my_fab.dart';
 import 'package:simple_daily_routine/widgets/routine_card.dart';
-import '../models/routine_list.dart';
+import 'package:simple_daily_routine/models/routine_list.dart';
+import 'package:simple_daily_routine/widgets/color_selection_row.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key,});
-
-  
+  const MyHomePage({
+    super.key,
+  });
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String? routineName;
+  Color? colour = Colors.grey.shade700;
+  String? dropdownValue;
+  bool? routineValue;
+  String? _selectedTime;
 
-  String? newTaskTitle;
-  int? index;
+  void checkBoxTapped(bool? value, int index){
+    setState(() {
+
+      routineList[index][2]= value;
+    });
+   // db.updateDatabase();
+
+  }
+
+
+  Future<void> displayTimeDialog() async {
+    final TimeOfDay? time =
+        await showTimePicker(
+          context: context, 
+          initialTime: TimeOfDay.now(),
+          cancelText: 'CANCEL'
+          );
+    if (time != null) {
+      setState(() {
+        _selectedTime = time.format(context);
+      });
+    }
+  }
+
+
+  final _newRoutineNameController = TextEditingController();
+
+  //create a new routine
+  void createNewRoutine() {
+    //show alert dialog for user to enter the new habit details
+    showDialog(
+        context: context,
+        builder: (context) {
+          return MyAlertBox(
+            controller: _newRoutineNameController,
+            headingText: 'Add Routine',
+            hintText: 'Enter Routine Name..',
+            onSave: saveNewRoutine,
+            onCancel: cancelDialogRoutine,
+            timePressed: displayTimeDialog,
+            colorSelectionRow: ColorSelectionRow(
+              greyButtonPressed: () {
+                colour = Colors.grey.shade600;
+              },
+              blueButtonPressed: () {
+                colour = Colors.blue.shade500;
+              },
+              greenButtonPressed: () {
+                colour = Colors.green.shade500;
+              },
+              
+              purpleButtonPressed: () {
+                colour = Colors.purple.shade500;
+              },
+              redButtonPressed: () {
+                colour = Colors.red.shade500;
+              },
+            ),
+          );
+        });
+  }
+
+//save new routine
+  void saveNewRoutine() {
+    //add new routine to todays routine list
+    if (_newRoutineNameController.text.isNotEmpty){
+    setState(() {
+     
+        routineList.add([_newRoutineNameController.text, colour,false,_selectedTime]);
+      
+      
+    });
+    }
+      //Revert back to default RoutineCard colour
+     colour = Colors.grey.shade600;
+     //Revert time to null
+     _selectedTime = null;
+
+
+    //clear textfield
+    _newRoutineNameController.clear();
+    // pop dialog box
+    Navigator.of(context).pop();
+
+    // db.updateDatabase();
+  }
+
+  //cancel new routine
+  void cancelDialogRoutine() {
+    //Revert back to default RoutineCard colour
+     colour = Colors.grey.shade600;
+     //Revert time to null
+     _selectedTime = null;
+
+
+    //clear textfield
+    _newRoutineNameController.clear();
+    // pop dialog box
+    Navigator.of(context).pop();
+  }
+
+//delete routine
+  void deleteRoutine(int index) {
+    setState(() {
+      routineList.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          //To determine the index of the current RoutineCard added for the key parameter
-                for(int i = 0; i < routineList.length; i++){
-                  index = i+1;
-                }
-                
-           
-          showDialog(
-  context: context,
-  builder: (BuildContext context) {
-    return AlertDialog(
-      title: Text('Add Routine'),
-      content: TextField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black,width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32)),
-            
-          ),
-          enabledBorder:  OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black,width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
-            
-          ),
-          focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: Colors.black, width: 2.0),
-          borderRadius: BorderRadius.all(Radius.circular(25.0)),
-        ),
-        ) ,
-        onChanged: (newTask){
-          newTaskTitle = newTask;
-        },
+      backgroundColor: Colors.white,
 
+      appBar: AppBar(
+        backgroundColor: Colors.grey[200],
+        elevation: 0.7,
+        title: const Text(
+          'Routine ',
+          style: TextStyle(fontSize: 28, color: Colors.black),
+        ),
+        centerTitle: true,
       ),
-      actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            
-            TextButton(
-              onPressed: () {
-                
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            
-            TextButton(
-              
-              onPressed: () {
-                setState(() {
-                  
-                 routineList.add(RoutineCard(newTaskTitle:newTaskTitle,key: ValueKey('$index'),));
-                
-                });
-                print(routineList);
-                Navigator.of(context).pop();
-              },
-              child: Text('Save'),
-            ),
-          ],
-        ),
-      ],
-    );
-  },
-);
+      floatingActionButton: MyFloatingActionButton(
+        onPressed: createNewRoutine,
+      ),
 
-        },
-        backgroundColor: const Color.fromARGB(255, 51, 53, 52),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,),
-        ),
-      
-        backgroundColor: const Color(0xFFFDFDFD),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.7,
-          title: const Text(
-            'Daily Routine',
-            style: TextStyle(fontSize: 28,color: Colors.black),
-            
-          ),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 20.0,left: 13,right: 13,bottom: 60),
-          child: ReorderableListView(          
-              
-            children: routineList,
-            
-            
-            onReorder: (int oldIndex,int newIndex){
+      //The List View
+      body: Padding(
+          padding:
+              const EdgeInsets.only(top: 20.0, left: 13, right: 13, bottom: 60),
+
+          // Lists of Routine Tasks
+          child: ReorderableListView.builder(
+            onReorder: ( oldIndex, newIndex) {
               setState(() {
-                if(oldIndex < newIndex){
+                if (oldIndex < newIndex) {
                   newIndex -= 1;
+                   
                 }
                 final item = routineList.removeAt(oldIndex);
-                routineList.insert(newIndex,item);
-              });
-            }
-
-            ,),
-        ));
+                
+                routineList.insert(newIndex, item);
+              });},
+              itemCount: routineList.length,
+              itemBuilder: (context, index) {
+                return RoutineCard(
+                  key: ValueKey(index),
+                  routineName: routineList[index][0],
+                  deleteOnpressed: () => deleteRoutine(index),
+                  routineCompleted: routineList[index][2],
+                  routineOnChanged: (routineValue)=>checkBoxTapped(routineValue,index),
+                  selectedTime: routineList[index][3],
+                  
+                 // dropdownValue: dropdownValue,
+                  onDropdownMenuPressed: (value) {
+                    setState(() {
+                      dropdownValue = value;
+                    });
+                  },
+                  
+                  colour: routineList[index][1],
+                );
+              })),
+    );
   }
 }
+
+
+
+
+// ListView.builder(
+//               itemCount: routineList.length,
+//               itemBuilder: (context, index) {
+//                 return RoutineCard(
+//                   routineName: routineList[index][0],
+//                   deleteOnpressed: () => deleteRoutine(index),
+//                   editOnpressed: ()=> editRoutine(index),
+//                   dropdownValue: dropdownValue,
+//                   onDropdownMenuPressed: (value) {
+//                     setState(() {
+//                       dropdownValue = value;
+//                     });
+//                   },
+                  
+//                   colour: routineList[index][1],
+//                 );
+//               })),

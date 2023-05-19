@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/routine_card.dart';
 
 
-
- List<RoutineCard> routineList =[
-               RoutineCard(newTaskTitle:'Wake Up',key: ValueKey('0'),),
+ List<List<dynamic>> routineList =[
+               //['Wake Up',Color.fromARGB(255, 51, 53, 52)],
               
 ];
