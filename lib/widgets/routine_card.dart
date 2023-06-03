@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_daily_routine/constants.dart';
 
 
+
 class RoutineCard extends StatelessWidget {
 
   final String? routineName;
@@ -9,9 +10,10 @@ class RoutineCard extends StatelessWidget {
   final Function()? deleteOnpressed;
   final bool routineCompleted;
   final Function(bool?)? routineOnChanged;
-  final String? dropdownValue;
+  final String? dropdownValue; 
   String? selectedTime;
   Color? colour;
+
 
   RoutineCard({
     super.key,
@@ -20,9 +22,10 @@ class RoutineCard extends StatelessWidget {
     required this.deleteOnpressed,
     required this.routineOnChanged,
     required this.routineCompleted,
-     this.dropdownValue,
+    this.dropdownValue,   
     required this.selectedTime,
     required this.colour ,
+    
 
   });
   @override
@@ -65,8 +68,8 @@ class RoutineCard extends StatelessWidget {
                 
                 DropdownMenuItem(
                   value: 'Delete',
-                  child: Text('Delete'),
                   onTap: deleteOnpressed,
+                  child: const Text('Delete'),
                 ),
               ],
             ),

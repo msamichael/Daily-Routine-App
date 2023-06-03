@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:simple_daily_routine/widgets/my_alert_box.dart';
 import 'package:simple_daily_routine/widgets/my_fab.dart';
 import 'package:simple_daily_routine/widgets/routine_card.dart';
-import 'package:simple_daily_routine/models/routine_list.dart';
+
 import 'package:simple_daily_routine/widgets/color_selection_row.dart';
+import 'package:simple_daily_routine/data/routine_database.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -21,18 +24,47 @@ class _MyHomePageState extends State<MyHomePage> {
   Color? colour = Colors.grey.shade700;
   String? dropdownValue;
   bool? routineValue;
-  String? _selectedTime;
+  String? selectedTime;
 
+  RoutineDatabase db = RoutineDatabase();
+  final _myBox = Hive.box('Routine_Database');
+
+  @override
+  void initState(){
+    //if there is no current routine List, then it is the 1st time ever opening the app
+    //then create default data
+    if (_myBox.get('CURRENT_ROUTINE_LIST') == null){
+      db.createDefaultData();
+    }
+
+    //there already exists data, this is not the first time
+    else{
+      db.loadData();
+    }
+
+    //update the database
+    db.updateDatabase();
+
+    super.initState();
+
+
+  }
+ 
+
+ //validation for checkbox state
   void checkBoxTapped(bool? value, int index){
     setState(() {
 
-      routineList[index][2]= value;
+      db.routineList[index][2]= value;
     });
    // db.updateDatabase();
 
   }
 
 
+
+    
+// display time picker
   Future<void> displayTimeDialog() async {
     final TimeOfDay? time =
         await showTimePicker(
@@ -42,11 +74,11 @@ class _MyHomePageState extends State<MyHomePage> {
           );
     if (time != null) {
       setState(() {
-        _selectedTime = time.format(context);
+        selectedTime = time.format(context);
+        //selectedScheduleTime= time.
       });
     }
   }
-
 
   final _newRoutineNameController = TextEditingController();
 
@@ -91,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_newRoutineNameController.text.isNotEmpty){
     setState(() {
      
-        routineList.add([_newRoutineNameController.text, colour,false,_selectedTime]);
+        db.routineList.add([_newRoutineNameController.text, colour,false,selectedTime]);
       
       
     });
@@ -99,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //Revert back to default RoutineCard colour
      colour = Colors.grey.shade600;
      //Revert time to null
-     _selectedTime = null;
+     selectedTime = null;
 
 
     //clear textfield
@@ -115,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Revert back to default RoutineCard colour
      colour = Colors.grey.shade600;
      //Revert time to null
-     _selectedTime = null;
+     selectedTime = null;
 
 
     //clear textfield
@@ -127,10 +159,12 @@ class _MyHomePageState extends State<MyHomePage> {
 //delete routine
   void deleteRoutine(int index) {
     setState(() {
-      routineList.removeAt(index);
+      db.routineList.removeAt(index);
     });
   }
 
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,28 +196,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   newIndex -= 1;
                    
                 }
-                final item = routineList.removeAt(oldIndex);
+                final item = db.routineList.removeAt(oldIndex);
                 
-                routineList.insert(newIndex, item);
+                db.routineList.insert(newIndex, item);
               });},
-              itemCount: routineList.length,
+              itemCount: db.routineList.length,
               itemBuilder: (context, index) {
                 return RoutineCard(
                   key: ValueKey(index),
-                  routineName: routineList[index][0],
+                  routineName: db.routineList[index][0],
                   deleteOnpressed: () => deleteRoutine(index),
-                  routineCompleted: routineList[index][2],
+                  routineCompleted: db.routineList[index][2],
                   routineOnChanged: (routineValue)=>checkBoxTapped(routineValue,index),
-                  selectedTime: routineList[index][3],
+                  selectedTime: db.routineList[index][3],
                   
-                 // dropdownValue: dropdownValue,
+                 
                   onDropdownMenuPressed: (value) {
                     setState(() {
                       dropdownValue = value;
                     });
                   },
                   
-                  colour: routineList[index][1],
+                  colour: db.routineList[index][1],
                 );
               })),
     );
@@ -193,20 +227,3 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-// ListView.builder(
-//               itemCount: routineList.length,
-//               itemBuilder: (context, index) {
-//                 return RoutineCard(
-//                   routineName: routineList[index][0],
-//                   deleteOnpressed: () => deleteRoutine(index),
-//                   editOnpressed: ()=> editRoutine(index),
-//                   dropdownValue: dropdownValue,
-//                   onDropdownMenuPressed: (value) {
-//                     setState(() {
-//                       dropdownValue = value;
-//                     });
-//                   },
-                  
-//                   colour: routineList[index][1],
-//                 );
-//               })),

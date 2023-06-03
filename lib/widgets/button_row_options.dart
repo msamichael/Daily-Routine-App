@@ -20,10 +20,7 @@ class ButtonRowOptions extends StatelessWidget {
       children: [
         //Cancel Button
         TextButton(
-          // style: ButtonStyle(
-          //   backgroundColor: MaterialStateProperty.all(
-          //       Color.fromARGB(119, 158, 158, 158)),
-          // ),
+          
           onPressed: cancelButtonPressed,//change to onCancel
           child: Text(
             'Cancel',
@@ -33,7 +30,7 @@ class ButtonRowOptions extends StatelessWidget {
         SizedBox(
           width: 8,
         ),
-        // (Save , Add to Saved, Add to Routine) Button
+        //TODO: (Archive , Add to Archive, Add to Routine) Button
         TextButton(
           onPressed: saveButtonPressed,// change to onSave
           child: Text(
