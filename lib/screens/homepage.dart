@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:simple_daily_routine/widgets/my_alert_box.dart';
 import 'package:simple_daily_routine/widgets/my_fab.dart';
 import 'package:simple_daily_routine/widgets/routine_card.dart';
-
 import 'package:simple_daily_routine/widgets/color_selection_row.dart';
 import 'package:simple_daily_routine/data/routine_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 
 
 class MyHomePage extends StatefulWidget {
@@ -171,11 +171,15 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.white,
 
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
-        elevation: 0.7,
+        backgroundColor: Colors.white,
+        elevation: 0.4,
         title: const Text(
           'Routine ',
-          style: TextStyle(fontSize: 28, color: Colors.black),
+          style: TextStyle(
+            fontSize: 28, 
+            color: Colors.black,
+            fontFamily: 'Lato',
+            fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -217,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                   
-                  colour: db.routineList[index][1],
+                  routineColour: db.routineList[index][1],
                 );
               })),
     );

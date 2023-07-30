@@ -11,11 +11,11 @@ class RoutineCard extends StatelessWidget {
   final bool routineCompleted;
   final Function(bool?)? routineOnChanged;
   final String? dropdownValue; 
-  String? selectedTime;
-  Color? colour;
+  final String? selectedTime;
+  final Color? routineColour;
 
 
-  RoutineCard({
+  const RoutineCard({
     super.key,
     required this.routineName,
     required this.onDropdownMenuPressed,
@@ -24,7 +24,7 @@ class RoutineCard extends StatelessWidget {
     required this.routineCompleted,
     this.dropdownValue,   
     required this.selectedTime,
-    required this.colour ,
+    required this.routineColour ,
     
 
   });
@@ -33,7 +33,7 @@ class RoutineCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       child: Card(
-        color: colour,
+        color: routineColour,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
           child: ListTile(
@@ -43,16 +43,22 @@ class RoutineCard extends StatelessWidget {
               value: routineCompleted,
               onChanged: routineOnChanged,
               ),
-               subtitle: Text( selectedTime ?? '',
-               style: TextStyle(color:kgreyBlack,
+            title: Text(routineName!,
+              style: const TextStyle(
+                fontFamily:'Lato',
+                fontSize: 21, 
+                color: Colors.white,
+                fontWeight: FontWeight.bold
+                ),
+            ),
+            
+              subtitle: Text( selectedTime ?? '',
+               style: const TextStyle(color:kgreyBlack,
                fontWeight: FontWeight.bold,
                fontSize:13.0,
                ),
                
                ),
-            title: Text(routineName!,
-              style: const TextStyle(fontSize: 21, color: Colors.white),
-            ),
             trailing: DropdownButton(
               underline:Container(
                 width: 0,

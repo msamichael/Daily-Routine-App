@@ -6,15 +6,15 @@ final _myBox = Hive.box('Routine_Database');
 
 class RoutineDatabase{
 
-List<List<dynamic>> routineList =[
-               //['Wake Up',Color.fromARGB(255, 51, 53, 52)],
-];
+//[routineName,routineColor,routineCompleted,selectedTime]
+List<List<dynamic>> routineList =[];
 
 //create initial default data
 void createDefaultData(){
+  //[routineName,routineColor,routineCompleted,selectedTime]
   routineList = [
-    ['Run',Colors.grey.shade600,false,null],
-    ['Read',Colors.grey.shade600,false,null],
+    ['Run',Colors.grey.shade700,false,null],
+    ['Read',Colors.grey.shade700,false,null],
   ];
 }
 

@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_daily_routine/constants.dart';
 import 'screens/homepage.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 
