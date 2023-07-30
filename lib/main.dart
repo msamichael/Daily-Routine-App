@@ -2,11 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:simple_daily_routine/constants.dart';
-
 import 'screens/homepage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+
+void main() async{
+  //initialize hive
+  await Hive.initFlutter();
+
+  //open a box
+  await Hive.openBox('Routine_Database');
+
   runApp(const MyApp());
+  
 }
 
 class MyApp extends StatelessWidget {

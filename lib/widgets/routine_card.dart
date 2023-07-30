@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_daily_routine/constants.dart';
 
 
+
 class RoutineCard extends StatelessWidget {
 
   final String? routineName;
@@ -9,20 +10,22 @@ class RoutineCard extends StatelessWidget {
   final Function()? deleteOnpressed;
   final bool routineCompleted;
   final Function(bool?)? routineOnChanged;
-  final String? dropdownValue;
-  String? selectedTime;
-  Color? colour;
+  final String? dropdownValue; 
+  final String? selectedTime;
+  final Color? routineColour;
 
-  RoutineCard({
+
+  const RoutineCard({
     super.key,
     required this.routineName,
     required this.onDropdownMenuPressed,
     required this.deleteOnpressed,
     required this.routineOnChanged,
     required this.routineCompleted,
-     this.dropdownValue,
+    this.dropdownValue,   
     required this.selectedTime,
-    required this.colour ,
+    required this.routineColour ,
+    
 
   });
   @override
@@ -30,7 +33,7 @@ class RoutineCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       child: Card(
-        color: colour,
+        color: routineColour,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
           child: ListTile(
@@ -40,16 +43,22 @@ class RoutineCard extends StatelessWidget {
               value: routineCompleted,
               onChanged: routineOnChanged,
               ),
-               subtitle: Text( selectedTime ?? '',
-               style: TextStyle(color:kgreyBlack,
+            title: Text(routineName!,
+              style: const TextStyle(
+                fontFamily:'Lato',
+                fontSize: 21, 
+                color: Colors.white,
+                fontWeight: FontWeight.bold
+                ),
+            ),
+            
+              subtitle: Text( selectedTime ?? '',
+               style: const TextStyle(color:kgreyBlack,
                fontWeight: FontWeight.bold,
                fontSize:13.0,
                ),
                
                ),
-            title: Text(routineName!,
-              style: const TextStyle(fontSize: 21, color: Colors.white),
-            ),
             trailing: DropdownButton(
               underline:Container(
                 width: 0,
@@ -65,8 +74,8 @@ class RoutineCard extends StatelessWidget {
                 
                 DropdownMenuItem(
                   value: 'Delete',
-                  child: Text('Delete'),
                   onTap: deleteOnpressed,
+                  child: const Text('Delete'),
                 ),
               ],
             ),

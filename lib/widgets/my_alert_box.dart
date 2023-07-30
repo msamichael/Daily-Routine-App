@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:simple_daily_routine/widgets/time_picker.dart';
+import 'package:simple_daily_routine/widgets/time_picker_button.dart';
 
 import 'color_selection_row.dart';
 
